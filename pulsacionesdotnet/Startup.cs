@@ -1,8 +1,10 @@
 using System;
+using Datos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,6 +47,10 @@ namespace pulsacionesdotnet
         }
     });
 });
+
+            //contextos base de datos
+            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            services.AddDbContext<PulsacionesContext>(Context => Context.UseSqlServer(connectionString));
 
             services.AddSpaStaticFiles(configuration =>
             {

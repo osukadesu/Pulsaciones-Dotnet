@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Datos;
 using Entity;
-using System.Collections.Generic;
+
 
 namespace Logica
 {
@@ -23,77 +25,93 @@ namespace Logica
                 return new GuardarPersonaResponse(persona);
             }
             catch (Exception e)
+
             {
                 return new GuardarPersonaResponse($"Error de la Aplicacion: {e.Message}");
             }
+
         }
-        public List<Persona> ConsultarTodos()
-        {
-            _conexion.Open();
-            List<Persona> personas = _repositorio.ConsultarTodos();
-            _conexion.Close();
-            return personas;
-        }
-        public string Eliminar(string identificacion)
+        public ConsultaPersonaResponse ConsultarTodos()
         {
             try
             {
-                _conexion.Open();
-                var persona = _repositorio.BuscarPorIdentificacion(identificacion);
-                if (persona != null)
-                {
-                    _repositorio.Eliminar(persona);
-                    _conexion.Close();
-                    return ($"El registro {persona.Nombre} se ha eliminado satisfactoriamente.");
-                }
-                else
-                {
-                    return ($"Lo sentimos, {identificacion} no se encuentra registrada.");
-                }
+                List<Persona> personas = _context.Personas.ToList();
+                return new ConsultaPersonaResponse(personas);
             }
             catch (Exception e)
             {
-
-                return $"Error de la Aplicación: {e.Message}";
+                return new ConsultaPersonaResponse($"Error en la aplicacion:  {e.Message}");
             }
-            finally { _conexion.Close(); }
-
         }
+
         public Persona BuscarxIdentificacion(string identificacion)
         {
-            _conexion.Open();
-            Persona persona = _repositorio.BuscarPorIdentificacion(identificacion);
-            _conexion.Close();
+            Persona persona = _context.Personas.Find(identificacion);
             return persona;
         }
-        public int Totalizar()
-        {
-            return _repositorio.Totalizar();
-        }
-        public int TotalizarMujeres()
-        {
-            return _repositorio.TotalizarMujeres();
-        }
-        public int TotalizarHombres()
-        {
-            return _repositorio.TotalizarHombres();
-        }
-    }
 
-    public class GuardarPersonaResponse
-    {
-        public GuardarPersonaResponse(Persona persona)
+        public string Eliminar(string identificacion)
         {
-            Error = false;
-            Persona = persona;
+            Persona persona = new Persona();
+            if ((persona = _context.Personas.Find(identificacion)) != null)
+            {
+                _context.Personas.Remove(persona);
+                _context.SaveChanges();
+                return $"Se ha eliminado la persona.";
+            }
+            else
+            {
+                return $"No se encontro la persona. ";
+            }
         }
-        public GuardarPersonaResponse(string mensaje)
+
+        public class ConsultaPersonaResponse
         {
-            Error = true;
-            Mensaje = mensaje;
+
+            public ConsultaPersonaResponse(List<Persona> personas)
+            {
+                Error = false;
+                Personas = personas;
+            }
+
+            public ConsultaPersonaResponse(string mensaje)
+            {
+                Error = true;
+                Mensaje = mensaje;
+            }
+            public Boolean Error { get; set; }
+            public string Mensaje { get; set; }
+            public List<Persona> Personas { get; set; }
         }
-        public bool Error { get; set; }
-        public string Mensaje { get; set; }
-        public Persona Persona { get; set; }
+        public class GuardarPersonaResponse
+
+        {
+
+            public GuardarPersonaResponse(Persona persona)
+
+            {
+                Error = false;
+
+                Persona = persona;
+
+            }
+
+
+
+            public GuardarPersonaResponse(string mensaje)
+
+            {
+                Error = true;
+                Mensaje = mensaje;
+            }
+
+            public bool Error { get; set; }
+
+            public string Mensaje { get; set; }
+
+            public Persona Persona { get; set; }
+
+        }
+
     }
 }

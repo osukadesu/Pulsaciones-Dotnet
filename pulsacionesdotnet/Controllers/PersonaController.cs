@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Controllers;
 using Entity;
+using Datos;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,20 +13,25 @@ public class PersonaController : ControllerBase
 {
     private readonly PersonaService _personaService;
     public IConfiguration Configuration { get; }
-    public PersonaController(IConfiguration configuration)
+    public PersonaController(PulsacionesContext context)
     {
-        Configuration = configuration;
-        string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-        _personaService = new PersonaService(connectionString);
+        _personaService = new PersonaService(context);
     }
-    // GET: api/Persona
+    // GET: api/Persona​
     [HttpGet]
-    public IEnumerable<PersonaViewModel> Gets()
+    public ActionResult<PersonaViewModel> Gets()
     {
-        var personas = _personaService.ConsultarTodos().Select(p => new PersonaViewModel(p));
-        return personas;
+        var response = _personaService.ConsultarTodos();
+        if (response.Error)
+        {
+            return BadRequest(response.Mensaje);
+        }
+        else
+        {
+            return Ok(response.Personas.Select(p => new PersonaViewModel(p)));
+        }
     }
-    // GET: api/Persona/5
+    // GET: api/Persona/5​
     [HttpGet("{identificacion}")]
     public ActionResult<PersonaViewModel> Get(string identificacion)
     {
@@ -34,21 +40,9 @@ public class PersonaController : ControllerBase
         var personaViewModel = new PersonaViewModel(persona);
         return personaViewModel;
     }
-    private Persona MapearPersona(PersonaInputModel personaInput)
-    {
-        var persona = new Persona
-        {
-            Identificacion = personaInput.Identificacion,
-            Nombre = personaInput.Nombre,
-            Edad = personaInput.Edad,
-            Sexo = personaInput.Sexo,
-            Pulsacion = personaInput.Pulsacion
-        };
-        
-        return persona;
-    }
 
-    // POST: api/Persona
+    // POST: api/Persona​
+
     [HttpPost]
     public ActionResult<PersonaViewModel> Post(PersonaInputModel personaInput)
     {
@@ -60,11 +54,27 @@ public class PersonaController : ControllerBase
         }
         return Ok(response.Persona);
     }
-    // DELETE: api/Persona/5
+
+    // DELETE: api/Persona/5​
+
     [HttpDelete("{identificacion}")]
     public ActionResult<string> Delete(string identificacion)
     {
         string mensaje = _personaService.Eliminar(identificacion);
         return Ok(mensaje);
+    }
+
+    private Persona MapearPersona(PersonaInputModel personaInput)
+    {
+        var persona = new Persona
+        {
+            Identificacion = personaInput.Identificacion,
+            Nombre = personaInput.Nombre,
+            Edad = personaInput.Edad,
+            Sexo = personaInput.Sexo,
+            Pulsacion = personaInput.Pulsacion
+        };
+
+        return persona;
     }
 }
