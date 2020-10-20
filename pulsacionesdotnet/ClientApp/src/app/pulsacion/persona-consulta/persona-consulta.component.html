@@ -1,0 +1,42 @@
+<title>CONSULTA</title>
+<br>
+<div align="center"><img src="assets/Buscar.png" alt="Logo"><br>
+    <h1>CONSULTA</h1>
+</div><br>
+
+
+<form class="form-inline" class="container" id="Buscador">
+    <button class="btn btn-primary"  type="submit" >Eliminar Todo </button>
+</form><br><br>
+
+<form class="form-inline" class="container" id="Buscador">
+    <input class="form-control mr-sm-2" type="search" placeholder="Buscar por Cedula" aria-label="Search">
+    <button class="btn btn-primary" type="submit">Buscar </button>
+</form><br><br>
+
+<!--<button id="divcontainer2" type="button" class="btn btn-primary">Consultar</button>-->
+<div class="table-responsive" id="rcorners1">
+<table class="table table-bordered" id="myTable" *ngIf='personas && personas.length'>
+    <thead>
+        <tr class="thead-dark">
+            <th (click)="sortTable(0)" scope="col">#</th>
+            <th (click)="sortTable(1)">Cedula >> </th>
+            <th (click)="sortTable(2)">Nombre >></th>
+            <th (click)="sortTable(3)">Edad >></th>
+            <th (click)="sortTable(4)">Sexo >></th>
+            <th (click)="sortTable(5)">Pulsacion >></th>
+        </tr>
+    </thead>
+    <tbody id="tbodypulsacion" class="table-primary">
+        <tr *ngFor="let persona of personas; index as i ">
+            <td scope="row">{{ i + 1 }}</td>
+            <td>{{ persona.identificacion }} </td>
+            <td>{{ persona.nombre }}</td>
+            <td>{{ persona.edad }}</td>
+            <td>{{ persona.sexo }}</td>
+            <td>{{ persona.pulsacion  }}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br><br>

@@ -1,0 +1,25 @@
+<title>REGISTRO</title>
+<br><div align="center"><img src="assets/Registrar.png" alt="Logo">
+    <h1>REGISTRO</h1>
+</div><br>
+<div id="divcontainer" class="forms">
+    <form id="formularioRegistro">
+        <label>Identificacion</label>
+        <input type="text" id="identificacion" name="identificacion"  [(ngModel)]="persona.identificacion"   placeholder="Identificacion">
+        <label >Nombre</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="persona.nombre" placeholder="Nombre">
+        <label >Sexo</label>
+        <select id="sexo" name="sexo" [(ngModel)]="persona.sexo">
+            <option value="seleccionar">Seleccionar</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+        </select> <br>
+        <label >Edad</label><br>
+        <input type="number" id="edad" name="edad" [(ngModel)]="persona.edad" placeholder="Edad"><br>
+        <label >Pulsacion </label>
+        <input type="number" id="pulsacion" [(ngModel)]="persona.pulsacion" disabled="disabled">
+    </form>
+</div>
+<br>
+<button  id="divcontainer2" type="button" class="btn btn-primary" (click)="add()">Guardar</button>
+<button  id="divcontainer3" class="btn btn-primary" type="reset">Cancelar</button>

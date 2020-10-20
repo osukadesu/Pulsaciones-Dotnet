@@ -1,0 +1,40 @@
+#navcont {
+  height: 80px;
+}
+
+a {
+  font-size: 25px;
+  font-family: Serif;
+  color: #000000;
+}
+
+h1 {
+  font-size: 30px;
+  font-family: Serif;
+  text-align: center;
+  color: #000000;
+}
+
+h2 {
+  font-size: 30px;
+  font-family: Serif;
+  text-align: center;
+  color: #ffffff;
+}
+
+p {
+  font-size: 30px;
+  font-family: Serif;
+  text-align: justify;
+  color: #ffffff;
+}
+
+#rc3 {
+  background: #007bff;
+  border-radius: 25px;
+  padding: 20px;
+  position: relative;
+  left: 5%;
+  width: 90%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
